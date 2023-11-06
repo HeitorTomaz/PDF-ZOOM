@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
 <script type="module">
 import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-import define from "https://api.observablehq.com/@the-heitortomaz/pdf-zoom-viewer@307.js?v=4&filepath=https%3A%2F%2Fhtfshare.blob.core.windows.net%2Ffileshare%2FannotatedPdf-.zip";
+import define from "https://api.observablehq.com/@the-heitortomaz/pdf-zoom-viewer@307.js?v=4";
 new Runtime().module(define, name => {
   if (name === "viewof inputZipFile") return new Inspector(document.querySelector("#observablehq-viewof-inputZipFile-6959bb04"));
   if (name === "presenter") return new Inspector(document.querySelector("#observablehq-presenter-6959bb04"));

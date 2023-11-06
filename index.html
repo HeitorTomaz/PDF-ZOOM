@@ -1,2 +1,18 @@
-<iframe width="100%" height="803" frameborder="0"
-  src="https://observablehq.com/embed/@the-heitortomaz/pdf-zoom-viewer?cells=viewof+inputZipFile%2Cpresenter"></iframe>
+<html>
+  <body>
+    <div id="observablehq-viewof-inputZipFile-2b41e47d"></div>
+    <div id="observablehq-presenter-2b41e47d"></div>
+    <p>Credit: <a href="https://observablehq.com/@the-heitortomaz/pdf-zoom-viewer">PDF Zoom Viewer by Heitor Tomaz</a></p>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+    <script type="module">
+    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+    import define from "https://api.observablehq.com/@the-heitortomaz/pdf-zoom-viewer.js?v=4";
+    new Runtime().module(define, name => {
+      if (name === "viewof inputZipFile") return new Inspector(document.querySelector("#observablehq-viewof-inputZipFile-2b41e47d"));
+      if (name === "presenter") return new Inspector(document.querySelector("#observablehq-presenter-2b41e47d"));
+      return ["loadZipFile"].includes(name);
+    });
+    </script>
+  </body>
+</html>

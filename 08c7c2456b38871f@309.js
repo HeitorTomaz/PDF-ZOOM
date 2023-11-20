@@ -39,7 +39,7 @@ async function _loadZipFile(inputZipFile,filepath,zipreader,$0,$1,$2)
     }
     $1.value = aud_list;
     //Default, sem ser arraybuffer
-    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch("https://cors-anywhere.herokuapp.com/" + filepath).then(zipreader));
+    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch(filepath).then(zipreader));
     $2.value = JSON.parse(await readerUp.get(dir.filter(word => word.includes(".json"))[0]));
   }
 }

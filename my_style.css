@@ -1,0 +1,24 @@
+/* General Website Style rules */
+body {
+    font-family: "Helvetica", Sans-Serif;
+    background-color: rgb(238, 238, 238);
+    text-align: center;
+    align-items: center;
+  }
+div {
+    text-align: center;
+    align-items: center;
+    display: inline-grid;
+}
+
+.Header
+{
+
+    background-color: black;
+    color:azure;
+    margin-bottom: 10px;
+}
+
+div.Header p {
+    display: none;
+}

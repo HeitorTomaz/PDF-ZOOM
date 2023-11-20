@@ -1,0 +1,14 @@
+{
+  "name": "@the-heitortomaz/pdf-zoom-viewer",
+  "main": "08c7c2456b38871f@309.js",
+  "version": "309.0.0",
+  "homepage": "https://observablehq.com/@the-heitortomaz/pdf-zoom-viewer",
+  "author": {
+    "name": "Heitor Tomaz",
+    "url": "https://observablehq.com/@the-heitortomaz"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

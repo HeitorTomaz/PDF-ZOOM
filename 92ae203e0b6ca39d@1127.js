@@ -63,7 +63,7 @@ function _props(screen)
 }
 
 
-function _rectViewer(screen,htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,getRectImage,MBR,Vec,mbrTransf,Matrix,Audio){return(
+function _rectViewer(screen,htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,FileAttachment,getRectImage,MBR,Vec,mbrTransf,Matrix,Audio){return(
 async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     const {
       width = (document.fullscreenElement ? screen.width : 800),
@@ -187,7 +187,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     }
     
     // Draws the clickable areas in the page
-    function loadAreas(pageNo, delay = 500) {
+    async function loadAreas(pageNo, delay = 500) {
       let areas = pageRectangles.filter((d) => d.pageNo == pageNo && d.box);
       //let t = d3.transition().delay(delay);
       areaGroup
@@ -227,6 +227,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
         });
       console.log("areas", areas);
 
+      var ico_link = await FileAttachment("noun-sound-2111571.svg").url()
       
       icoGroup
         .selectAll("image")
@@ -236,7 +237,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
             enter
             .append("image")
               .attr("class", "sound-ico")
-              .attr("xlink:href", "https://thenounproject.com/api/private/icons/1583090/edit/?backgroundShape=CIRCLE&backgroundShapeColor=%23FFFFFF&backgroundShapeOpacity=1&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0")
+              .attr("xlink:href", ico_link)
               .each(function (d, i) {
                 //console.log("ico d.box", d.box);
                   const  { box }  = d;
@@ -320,7 +321,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
               .remove()
         );
   
-      loadAreas(pageNo, delay + duration);
+      await loadAreas(pageNo, delay + duration);
   
       currentPageNo = pageNo;
       PageInp.value = currentPageNo;
@@ -459,6 +460,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
       
       if (rect && rect.box ) {
 
+        var ico_link = await FileAttachment("noun-sound-2111571.svg").url()
         
         let data_rect = [rect]
         console.log("data_rect", data_rect);
@@ -470,7 +472,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
               enter
               .append("image")
                 .attr("class", "playpause-ico")
-                .attr("xlink:href", "https://thenounproject.com/api/private/icons/159152/edit/?backgroundShape=CIRCLE&backgroundShapeColor=%23FFFFFF&backgroundShapeOpacity=1&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0")
+                .attr("xlink:href", ico_link)
                 .attr("x", icox + 5 )
                 .attr("y", icoy + 5 )
                 .attr("width", 20)
@@ -634,7 +636,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
       <div style="display:none">
         ${soundClips}
       </div>
-      <div class="flex"><div class="center">${rectNo}</div><div class="center">${buttons}</div></div>
+      <div class="flex" style="bottom: 10px;"><div class="center">${rectNo}</div><div class="center">${buttons}</div></div>
     </div>
     <style>
     .flex {
@@ -754,11 +756,16 @@ async function _pdfjs(require)
 }
 
 
+async function _20(FileAttachment){return(
+await FileAttachment("noun-sound-2111571.svg").url()
+)}
+
 export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["igarashi-et-al-1999.pdf", {url: new URL("./files/7c017ecb74bcfc40c27ab7eece42a036a4e91b2c85e855277b42424f70d6312bac5e95c18d67c783ff0979d8a85150c57987873ac4b2357ca34cb20a2624000e.pdf", import.meta.url), mimeType: "application/pdf", toString}]
+    ["igarashi-et-al-1999.pdf", {url: new URL("./files/7c017ecb74bcfc40c27ab7eece42a036a4e91b2c85e855277b42424f70d6312bac5e95c18d67c783ff0979d8a85150c57987873ac4b2357ca34cb20a2624000e.pdf", import.meta.url), mimeType: "application/pdf", toString}],
+    ["noun-sound-2111571.svg", {url: new URL("./files/d07eedd00017755b334bed10a5b3a3ed40755ed43c7eeaa16bd0faf6d765e8e27916f0e50ebdef3838353568f74ea93a4617b8bb74982d3f6b56744ae4782b96.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
@@ -767,7 +774,7 @@ export default function define(runtime, observer) {
   main.variable(observer("getRectImage")).define("getRectImage", ["DOM"], _getRectImage);
   main.variable(observer("getText")).define("getText", _getText);
   main.variable(observer("props")).define("props", ["screen"], _props);
-  main.variable(observer("rectViewer")).define("rectViewer", ["screen","htl","Dictaphone","Inputs","d3","Event","boxToMbr","mutable debug","getRectImage","MBR","Vec","mbrTransf","Matrix","Audio"], _rectViewer);
+  main.variable(observer("rectViewer")).define("rectViewer", ["screen","htl","Dictaphone","Inputs","d3","Event","boxToMbr","mutable debug","FileAttachment","getRectImage","MBR","Vec","mbrTransf","Matrix","Audio"], _rectViewer);
   main.variable(observer()).define(["getText","pdfDocument"], _8);
   main.define("initial debug", _debug);
   main.variable(observer("mutable debug")).define("mutable debug", ["Mutable", "initial debug"], (M, _) => new M(_));
@@ -786,5 +793,6 @@ export default function define(runtime, observer) {
   main.variable(observer("pdfjs")).define("pdfjs", ["require"], _pdfjs);
   const child2 = runtime.module(define2);
   main.import("Dictaphone", child2);
+  main.variable(observer()).define(["FileAttachment"], _20);
   return main;
 }

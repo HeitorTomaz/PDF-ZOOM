@@ -1,5 +1,5 @@
 import define1 from "./9a7362216b9c95fc@769.js";
-import define2 from "./3a1a35b62fdb644d@450.js";
+import define2 from "./3a1a35b62fdb644d@452.js";
 
 function _1(md){return(
 md`# PDF rect zoom viewer code`
@@ -53,15 +53,21 @@ async function getText(pdfDocument, pageNo) {
 }
 )}
 
-function _6(getText,pdfDocument){return(
-getText(pdfDocument, 1)
-)}
+function _props(screen)
+{
+  const props = { 
+  height : (document.fullscreenElement ? screen.height-100 : 600),
+  width : (document.fullscreenElement ? screen.width : 800)
+  }
+  return props
+}
 
-function _rectViewer(htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,getRectImage,MBR,Vec,mbrTransf,Matrix,Audio){return(
+
+function _rectViewer(screen,htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,getRectImage,MBR,Vec,mbrTransf,Matrix,Audio){return(
 async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     const {
-      width = 800,
-      height = 600,
+      width = (document.fullscreenElement ? screen.width : 800),
+      height = (document.fullscreenElement ? screen.height-80 : 700),
       margin = 30,
       mode = "sequential",
       zoom = 3,
@@ -81,12 +87,18 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
       DictaphoneObj.uploadAudio( audios[aud]);
     }
     var audio = null;
-  console.log("pageRectangles", pageRectangles);
+    console.log("pageRectangles", pageRectangles);
     // Insert rects without boxes in the pageRectangles variable
     // so that we have an empty beginning and end rect to start and end the
     // presentation
     pageRectangles = [{ pageNo: 1 }, ...pageRectangles, { pageNo: numPages }];
-    
+
+    const sleep = async (milliseconds) => {
+        await new Promise(resolve => {
+            return setTimeout(resolve, milliseconds)
+        });
+    };
+  
     // Navigation interface
     const rectNo = Inputs.range([0, pageRectangles.length - 1], {
       label: "Show selection",
@@ -112,6 +124,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
       label: "zoom position",
       value: zoomPosition
     });
+    const autoplay = Inputs.toggle({label: "Autoplay"})
   
     // An svg for displaying the rects
     const frame = htl.html`<svg width=${width} height=${height}>`;
@@ -150,7 +163,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
   
     // Sets an input to a given value
     function set(input, value) {
-      audio = null;
+      //audio = null;
       input.value = value;
       input.dispatchEvent(new Event("input"));
     }
@@ -426,6 +439,11 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                 .attr("opacity", 0)
                 .attr("transform", (d) => d.transf2);
                 setCurrentRectStatus(false);
+              
+              playpauseGroup
+              .selectAll(".playpause-ico")
+              .attr("opacity", 0)
+              
             }
           },
           (exit) => {
@@ -437,8 +455,11 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
               .remove();
           }
         );
-      if (rect && rect.box && (typeof (rect.audio) == "number")) {
-        console.log("icox",icox);
+      
+      
+      if (rect && rect.box ) {
+
+        
         let data_rect = [rect]
         console.log("data_rect", data_rect);
         playpauseGroup
@@ -457,46 +478,113 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                 .on("click", function (){
                   d3.select(this)
                     .each(function (d, i){
-                      console.log("play clicado d", d);
+                      console.log("play clicado 1 d", d);
+                      console.log("audio", audio);
                       if (typeof( d.audio) == "number"){
                          if (audio){
-                           if (!audio.paused){
+                           let playing = !audio.paused
+                           console.log("playing", playing);
+                           console.log("sameRect", sameRect);
+                           if (playing){
                              audio.pause();
-                           } else {
+                           }
+                           if (!playing || !sameRect) {
+                             console.log("Antes do play");
+                             audio = new Audio(DictaphoneObj.getAudio(d.audio).src);
                              audio.play();
+                             console.log("Depois do play");
                            }
                            //audio = null;
                          }
                         else {
                           console.log("DictaphoneObj.getAudio(d.audio)", DictaphoneObj.getAudio(d.audio))
                           audio = new Audio(DictaphoneObj.getAudio(d.audio).src);
+                          console.log("Antes do play");
                           audio.play();
+                          console.log("Depois do play");
                         }
+                        audio.onended = function() {
+                            console.log("The audio has ended");
+                            if (autoplay.value){
+                              nextCallback();
+                            }
+                        };
                        }
                     });
                 })
-                .style("display", function(d, i) {
-                  console.log("displayy d", d );
-                  let display = (typeof d.audio == "number"? 1:"none");
-                  console.log("display", display);
-                  return display ; })
+                .on("load", function (){
+                  console.log("onload");
+                  if (autoplay.value){
+                  d3.select(this)
+                      .each( async function (d, i){
+                        console.log("autoplay", d);
+                        if (typeof( d.audio) == "number"){
+                           if (audio){
+                             if (!audio.paused){
+                               audio.pause();
+                             } 
+                           }
+                          console.log("Antes do play - Autoplay");
+                           audio = new Audio(DictaphoneObj.getAudio(d.audio).src);
+                           audio.play();
+                           console.log("Depois do play - Autoplay");
+                           audio.onended = function() {
+                            console.log("The audio has ended");
+                              if(autoplay.value){
+                              nextCallback();
+                              }
+                          };
+                          
+                         } else {
+                          await sleep(5000);
+                          if(autoplay.value){
+                              nextCallback();
+                          }
+                        }
+                      });
+                  };
+                })
                 .style("text-anchor", "middle")
                 .attr("opacity", 0)
                 .transition()
                 .delay(1000)
-                .attr("opacity", 1),
+                .attr("opacity",function (d, i){ return (typeof d.audio == "number"? 1:0);}),
             
             (update) => {
               if (!sameRect) {
-                update
+                  update
+                  .attr("opacity", 0)
                   .transition()
+                  .delay(1000 + pageDuration)
+                  //.duration(1000)
                   .attr("x", icox + 5 )
-                .attr("y", icoy + 5 )
-                .attr("width", 20)
-                .attr("height", 20)
-                  .delay(1000)
-                  .duration(0)
-                  .attr("opacity", 1);
+                  .attr("y", icoy + 5 ) 
+                  .attr("opacity",function (d, i){ return (typeof d.audio == "number"? 1:0);});
+                  
+                update
+                  .each( async function (d, i){
+                    await sleep(2000);
+                    if (autoplay.value){
+                      console.log("autoplay", d);
+                      if (typeof( d.audio) == "number"){
+                         if (audio){
+                           if (!audio.paused){
+                             audio.pause();
+                           } 
+                         } 
+                        console.log("DictaphoneObj.getAudio(d.audio)", DictaphoneObj.getAudio(d.audio))
+                        audio = new Audio(DictaphoneObj.getAudio(d.audio).src);
+                        audio.play();
+                        audio.onended = function() {
+                            console.log("The audio has ended");
+                              if(autoplay.value){
+                              nextCallback();
+                            }
+                        };
+                      }
+                    }
+                  });
+                
               } else {
                 update
                   .transition()
@@ -505,16 +593,19 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                 .attr("width", 20)
                 .attr("height", 20)
                   .duration(0)
-                  .attr("opacity", 0)
               }
             },
             (exit) => {
               exit
-                .transition()
-                .duration(0)
                 .remove();
             }
           );
+      }
+      else if (rect && rect.box && autoplay.value) {
+        await sleep(5000);
+        if(autoplay.value){ //Caso tenha desmarcado durante delay
+          nextCallback();
+        }
       }
     }
   
@@ -536,9 +627,9 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
   
   
     return htl.html`
-    <div>
-      <div class="flex"><div class="center">${PageInp}</div><div class="center">${maxZoom}</div></div>
-      <div class="flex"><div class="center">${zoomPos}</div></div>
+    <div style="background-color: white">
+      <div class="flex" id="controles"><div class="center">${PageInp}</div><div class="center">${maxZoom}</div></div>
+      <div class="flex"><div class="center">${autoplay}</div><div class="center">${zoomPos}</div></div>
       ${frame}
       <div style="display:none">
         ${soundClips}
@@ -559,16 +650,48 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
      // margin:auto;
     }
     </style>
+  <script>
+  $('.controles')[0].onmousemove = (function() {
+      var onmousestop = function() {
+         $('.box').css('background-color', 'red');
+      }, thread;
+  
+      return function() {
+         $('.controles').css('background-color', 'black');
+          clearTimeout(thread);
+          thread = setTimeout(onmousestop, 1500);
+      };
+  })();
+  </script>
   `;
   }
+)}
+
+function _8(getText,pdfDocument){return(
+getText(pdfDocument, 1)
 )}
 
 function _debug(){return(
 []
 )}
 
-function _9(rectViewer,pdfDocument,defaultRects){return(
-rectViewer(pdfDocument, defaultRects)
+function _fullscreen(htl){return(
+htl.html`<button onclick=${({currentTarget}) => {
+  const currentCell = currentTarget.parentElement;
+  const nextCell = currentCell.nextElementSibling;
+  nextCell.requestFullscreen ? nextCell.requestFullscreen()
+    : nextCell.webkitRequestFullscreen ? nextCell.webkitRequestFullscreen()
+    : (() => { throw new Error("Fullscreen API not supported"); });
+  
+}}>Fullscreen</button>`
+)}
+
+function _11(rectViewer,pdfDocument,defaultRects,width,fullscreen){return(
+rectViewer(pdfDocument, defaultRects, {w:document.webkitIsFullScreen ? width : 1152, z: fullscreen.value})
+)}
+
+function _12(width){return(
+width
 )}
 
 function _mbrTransf(Matrix){return(
@@ -618,7 +741,7 @@ async function mapImages(Rectangles, wBar = 200, hBar = 90){
     }
 )}
 
-function _13(md){return(
+function _16(md){return(
 md`## Dependencies`
 )}
 
@@ -643,16 +766,19 @@ export default function define(runtime, observer) {
   main.variable(observer("defaultRects")).define("defaultRects", _defaultRects);
   main.variable(observer("getRectImage")).define("getRectImage", ["DOM"], _getRectImage);
   main.variable(observer("getText")).define("getText", _getText);
-  main.variable(observer()).define(["getText","pdfDocument"], _6);
-  main.variable(observer("rectViewer")).define("rectViewer", ["htl","Dictaphone","Inputs","d3","Event","boxToMbr","mutable debug","getRectImage","MBR","Vec","mbrTransf","Matrix","Audio"], _rectViewer);
+  main.variable(observer("props")).define("props", ["screen"], _props);
+  main.variable(observer("rectViewer")).define("rectViewer", ["screen","htl","Dictaphone","Inputs","d3","Event","boxToMbr","mutable debug","getRectImage","MBR","Vec","mbrTransf","Matrix","Audio"], _rectViewer);
+  main.variable(observer()).define(["getText","pdfDocument"], _8);
   main.define("initial debug", _debug);
   main.variable(observer("mutable debug")).define("mutable debug", ["Mutable", "initial debug"], (M, _) => new M(_));
   main.variable(observer("debug")).define("debug", ["mutable debug"], _ => _.generator);
-  main.variable(observer()).define(["rectViewer","pdfDocument","defaultRects"], _9);
+  main.variable(observer("fullscreen")).define("fullscreen", ["htl"], _fullscreen);
+  main.variable(observer()).define(["rectViewer","pdfDocument","defaultRects","width","fullscreen"], _11);
+  main.variable(observer()).define(["width"], _12);
   main.variable(observer("mbrTransf")).define("mbrTransf", ["Matrix"], _mbrTransf);
   main.variable(observer("boxToMbr")).define("boxToMbr", ["MBR","Vec"], _boxToMbr);
   main.variable(observer("mapImages")).define("mapImages", ["getRectImage","pdfDocument"], _mapImages);
-  main.variable(observer()).define(["md"], _13);
+  main.variable(observer()).define(["md"], _16);
   const child1 = runtime.module(define1);
   main.import("MBR", child1);
   main.import("Vec", child1);

@@ -10,13 +10,19 @@ div {
     align-items: center;
     display: inline-grid;
 }
-
+.main{
+  width: 70%;
+}
 .Header
 {
 
     background-color: #084cdf;
     color:#fff;
     margin-bottom: 10px;
+}
+h1 {
+  margin-block-start: 0.6em;
+  margin-block-end: 0.6em;
 }
 
 div.Header p {
@@ -57,8 +63,33 @@ input[type=file]::file-selector-button {
   }
 
 
+  div.fullscreen{
+    position: absolute;
+    left: 78%;
+    top: 100px;
+  }
 
-  div.observablehq button {
+  div.fullscreen button {
+    margin-right: 20px;
+    border: none;
+    background: #084cdf;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+    width: 120px;
+  }
+  
+  div.fullscreen button:hover {
+    background: #0d45a5;
+    
+  }
+
+
+
+
+  div.Presentation button {
     margin-right: 20px;
     border: none;
     background: #084cdf;
@@ -69,9 +100,12 @@ input[type=file]::file-selector-button {
     transition: background .2s ease-in-out;
   }
   
-  div.observablehq button:hover {
+  div.Presentation button:hover {
     background: #0d45a5;
   }
+
+
+
 
   /* Input Range */
   input[type=range] {

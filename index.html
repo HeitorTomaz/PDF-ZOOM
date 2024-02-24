@@ -17,7 +17,7 @@ import {Runtime, Library, Inspector} from "./runtime.js";
 const runtime = new Runtime();
 const main = runtime.module(define, Inspector.into(document.querySelector("div.main") ));
 document.querySelectorAll("div.observablehq").forEach ((div,i) => {
-    if (i != 0 && i != 1 && i != 3 ) { 
+    if (i != 0 && i != 1 && i != 6 && i != 7 ) { 
         div.style.display = "none";
     }
     if (i==0){
@@ -25,6 +25,12 @@ document.querySelectorAll("div.observablehq").forEach ((div,i) => {
     }
     if (i==1){
         div.className = "Upload"            
+    }
+    if (i==6){
+        div.className = "fullscreen"            
+    }
+    if (i==7){
+        div.className = "Presentation"            
     }
 });
 

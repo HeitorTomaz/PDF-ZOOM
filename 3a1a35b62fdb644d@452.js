@@ -523,6 +523,10 @@ function _rmv(Inputs,DictaphoneObj){return(
 Inputs.button("Remove", {value: null, reduce: () => DictaphoneObj.removeAudio(1)})
 )}
 
+function _22(DictaphoneObj){return(
+DictaphoneObj.getAudio(0)
+)}
+
 export default function define(runtime, observer) {
   const main = runtime.module();
   main.variable(observer()).define(["md"], _1);
@@ -551,5 +555,6 @@ export default function define(runtime, observer) {
   main.variable(observer("save")).define("save", ["Generators", "viewof save"], (G, _) => G.input(_));
   main.variable(observer("viewof rmv")).define("viewof rmv", ["Inputs","DictaphoneObj"], _rmv);
   main.variable(observer("rmv")).define("rmv", ["Generators", "viewof rmv"], (G, _) => G.input(_));
+  main.variable(observer()).define(["DictaphoneObj"], _22);
   return main;
 }

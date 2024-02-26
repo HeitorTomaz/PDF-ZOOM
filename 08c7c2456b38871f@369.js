@@ -57,7 +57,7 @@ md`<br>
 async function _loadZipFile(inputZipFile,filepath,zipreader,$0,$1,$2)
 {
   if (inputZipFile || filepath) {
-    let readerUp =  (inputZipFile ? await  zipreader(inputZipFile, { type: "arraybuffer" }) : await fetch("https://cors-anywhere.herokuapp.com/" + filepath).then(d => zipreader(d,{ type: "arraybuffer" })));
+    let readerUp =  (inputZipFile ? await  zipreader(inputZipFile, { type: "arraybuffer" }) : await fetch( filepath).then(d => zipreader(d,{ type: "arraybuffer" })));
     const dir = [...readerUp.keys()];
     console.log("dir", dir);
     $0.value = await readerUp.get( dir.filter(word => word.includes(".pdf"))[0]);
@@ -80,7 +80,7 @@ async function _loadZipFile(inputZipFile,filepath,zipreader,$0,$1,$2)
     }
     $1.value = aud_list;
     //Default, sem ser arraybuffer
-    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch("https://cors-anywhere.herokuapp.com/" + filepath).then(zipreader));
+    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch( filepath).then(zipreader));
     $2.value = JSON.parse(await readerUp.get(dir.filter(word => word.includes(".json"))[0]));
   }
 }

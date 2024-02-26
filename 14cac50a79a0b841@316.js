@@ -35,7 +35,7 @@ function _url(){return(
 )}
 
 function _A(url,zipreader){return(
-fetch("https://cors-anywhere.herokuapp.com/" + url).then(zipreader)
+fetch( url).then(zipreader)
 )}
 
 function _5(md){return(

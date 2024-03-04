@@ -67,14 +67,15 @@ function _rectViewer(screen,htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,FileAttac
 async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     const {
       width = (document.fullscreenElement ? screen.width : 800),
-      height = (document.fullscreenElement ? screen.height-80 : 700),
+      height = (document.fullscreenElement ? screen.height-100 : 700),
       margin = 30,
       mode = "sequential",
       zoom = 3,
       zoomPosition = "rectCenter", //
       audios = []
     } = options;
-  
+    console.log("document.fullscreenElement ",document.fullscreenElement );
+    console.log("screen.height ",screen.height );
     // Total Number of pages
     const numPages = pdfDocument._pdfInfo.numPages;
 
@@ -178,7 +179,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     // Navigation buttons
     const buttons = Inputs.button([
       ["prev", prevCallback],
-      ["next", nextCallback]
+      ["play / next", nextCallback]
     ]);
   
     // Sets an input to a given value

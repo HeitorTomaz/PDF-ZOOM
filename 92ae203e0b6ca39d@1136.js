@@ -67,7 +67,7 @@ function _rectViewer(screen,htl,Dictaphone,Inputs,d3,Event,boxToMbr,$0,FileAttac
 async function rectViewer(pdfDocument, pageRectangles, options = {}) {
     const {
       width = (document.fullscreenElement ? screen.width : 800),
-      height = (document.fullscreenElement ? screen.height-100 : 700),
+      height = (document.fullscreenElement ? screen.height-110 : 700),
       margin = 30,
       mode = "sequential",
       zoom = 3,

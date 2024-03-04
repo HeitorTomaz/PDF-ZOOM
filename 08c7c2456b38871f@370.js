@@ -1,4 +1,4 @@
-import define1 from "./92ae203e0b6ca39d@1127.js";
+import define1 from "./92ae203e0b6ca39d@1128.js";
 import define2 from "./14cac50a79a0b841@316.js";
 import define3 from "./7440fd46d55d55de@676.js";
 
@@ -57,7 +57,7 @@ md`<br>
 async function _loadZipFile(inputZipFile,filepath,zipreader,$0,$1,$2)
 {
   if (inputZipFile || filepath) {
-    let readerUp =  (inputZipFile ? await  zipreader(inputZipFile, { type: "arraybuffer" }) : await fetch( filepath).then(d => zipreader(d,{ type: "arraybuffer" })));
+    let readerUp =  (inputZipFile ? await  zipreader(inputZipFile, { type: "arraybuffer" }) : await fetch(filepath).then(d => zipreader(d,{ type: "arraybuffer" })));
     const dir = [...readerUp.keys()];
     console.log("dir", dir);
     $0.value = await readerUp.get( dir.filter(word => word.includes(".pdf"))[0]);
@@ -80,7 +80,7 @@ async function _loadZipFile(inputZipFile,filepath,zipreader,$0,$1,$2)
     }
     $1.value = aud_list;
     //Default, sem ser arraybuffer
-    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch( filepath).then(zipreader));
+    readerUp = (inputZipFile ? await  zipreader(inputZipFile) : await fetch(filepath).then(zipreader));
     $2.value = JSON.parse(await readerUp.get(dir.filter(word => word.includes(".json"))[0]));
   }
 }

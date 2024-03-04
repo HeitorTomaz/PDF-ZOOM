@@ -583,6 +583,11 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                               nextCallback();
                             }
                         };
+                      } else {
+                          await sleep(5000);
+                          if(autoplay.value){
+                            nextCallback();
+                          }
                       }
                     }
                   });

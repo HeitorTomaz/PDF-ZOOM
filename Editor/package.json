@@ -1,0 +1,14 @@
+{
+  "name": "@the-heitortomaz/pdf-rectangle-selector",
+  "main": "78cb64a9fddb7129@261.js",
+  "version": "261.0.0",
+  "homepage": "https://observablehq.com/@the-heitortomaz/pdf-rectangle-selector",
+  "author": {
+    "name": "Heitor Tomaz",
+    "url": "https://observablehq.com/@the-heitortomaz"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

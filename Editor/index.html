@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>PDF Rectangle Selector</title>
+<link rel="stylesheet" type="text/css" href="./inspector.css">
+<link rel="stylesheet" type="text/css" href="./my_style.css">
+<body>
+    <div class="main"></div>
+<script type="module">
+
+import define from "./index.js";
+import {Runtime, Library, Inspector} from "./runtime.js";
+
+const runtime = new Runtime();
+const main = runtime.module(define, Inspector.into(document.querySelector("div.main") ));
+document.querySelectorAll("div.observablehq").forEach ((div,i) => {
+    if (i != 0 && i != 1 && i != 3 && i != 5 && i != 6 ) { 
+        div.style.display = "none";
+    }
+    if (i==0){
+        div.className = "Header"            
+    }
+    if (i==1){
+        div.className = "Upload PDF"            
+    }
+    if (i==3){
+        div.className = "Upload ZIP"            
+    }
+    if (i==5){
+        div.className = "Save-ZIP"            
+    }
+    // if (i==6){
+    //     div.className = "fullscreen"            
+    // }
+    if (i==6){
+        div.className = "Presentation"            
+    }
+});
+
+</script>

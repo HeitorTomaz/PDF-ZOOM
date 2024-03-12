@@ -412,7 +412,16 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
               enter
                 .append("image")
                 .attr("href", (d) => d.url)
-                .on("click", closeCallback)
+                .on("click", function (){
+                        if ( audio ){
+                            let playing = !audio.paused
+                           console.log("playing", playing);
+                           if (playing){
+                             audio.pause();
+                           }
+                        }
+                          closeCallback();
+                })
                 //.on("click", loadRect(0))
                 .attr("transform", (d) => d.transf2)
                 .attr("opacity", 0)
@@ -517,7 +526,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                 })
                 .on("load", function (){
                   console.log("onload");
-                  if (autoplay.value){
+                  //if (autoplay.value){
                   d3.select(this)
                       .each( async function (d, i){
                         console.log("autoplay", d);
@@ -545,7 +554,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                           }
                         }
                       });
-                  };
+                  //};
                 })
                 .style("text-anchor", "middle")
                 .attr("opacity", 0)
@@ -566,8 +575,8 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                   
                 update
                   .each( async function (d, i){
-                    await sleep(2000);
-                    if (autoplay.value){
+                    await sleep(1000);
+                    if (autoplay.value){await sleep(1000);}
                       console.log("autoplay", d);
                       if (typeof( d.audio) == "number"){
                          if (audio){
@@ -590,7 +599,7 @@ async function rectViewer(pdfDocument, pageRectangles, options = {}) {
                             nextCallback();
                           }
                       }
-                    }
+                    //}
                   });
                 
               } else {

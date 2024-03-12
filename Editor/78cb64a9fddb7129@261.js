@@ -1,4 +1,4 @@
-import define1 from "./6de75d56115bcaf2@1070.js";
+import define1 from "./6de75d56115bcaf2@1071.js" ;
 import define2 from "./14cac50a79a0b841@316.js";
 import define3 from "./3a1a35b62fdb644d@452.js";
 

@@ -34,9 +34,26 @@ div.Upload {
     font-size: 13px;
 }
 
-div.Upload form label {
-    display: none;
+div.Upload form {
+  width: 470px;
+  margin: 5px;
 }
+div.Upload form label {
+  text-align: center;
+  margin-top: 10px;
+  color: #084cdf;
+  font-weight: bold;
+}
+
+div.ZIP {
+  position: absolute;
+  left: 42%;
+  top: 93px;
+}
+
+/* div.Upload form label {
+    display: none;
+} */
 
 input[type=file] {
     width: 350px;
@@ -111,6 +128,10 @@ input[type=file]::file-selector-button {
     align-items: normal;
   }
 
+  div.Presentation {
+    width: 69%;
+    margin: 5px;
+  }
 
   /* Input Range */
   input[type=range] {

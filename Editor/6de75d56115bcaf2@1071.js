@@ -189,7 +189,7 @@ async function selectRects(pdfDocument, options = {}) {
     <div class="flex-selector">
       <div class="button2-selector">${buttonsSelection}</div>
       <!-- <div class="button2-selector">${Selection}</div> -->
-      <div class="button2-selector">${buttonsRecorder}</div>
+       <!-- <div class="button2-selector">${buttonsRecorder}</div> -->
     </div>
     <div class="flex2" >
       <div class="newSidebar" height=${fh}px></div>
